@@ -29,8 +29,15 @@ module HttpAcceptLanguage
   #   request.preferred_language_from I18n.available_locales
   #   # => 'nl'
   #
-  def preferred_language_from(array)
-    (user_preferred_languages & array.collect { |i| i.to_s }).first
+  #  if first_two=true, then return the first two letter of the locale.
+  #  ex: en-GB => en 
+  #
+  def preferred_language_from(array, first_two=false)
+    if first_two
+      (user_preferred_languages.collect{|i| i[0..1] } & array.collect { |i| i.to_s }).first
+    else
+      (user_preferred_languages & array.collect { |i| i.to_s }).first
+    end
   end
 
   # Returns the first of the user_preferred_languages that is compatible
